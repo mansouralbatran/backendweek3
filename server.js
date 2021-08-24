@@ -6,6 +6,7 @@ const server = express();
 const mongoose = require('mongoose');
 const PORT = process.env.PORT;
 server.use(cors());
+server.use(express.json())
 
 mongoose.connect('mongodb://localhost:27017/book', { useNewUrlParser: true, useUnifiedTopology: true });
 /////class
@@ -26,6 +27,8 @@ const bookModel = mongoose.model('book', bookSchema);
 
 /////servers
 server.get('/test', testHandler);
+
+server.post('/addbook',AddBook)
 
 server.listen(PORT, () => {
     console.log(`Listning on PORT ${PORT}`)
@@ -57,7 +60,7 @@ function seedDataCollection() {
     arabic.save();
 }
 
-//// seedDataCollection();
+// seedDataCollection();
 
 
  function getbookfunction(req,resp){
@@ -67,13 +70,42 @@ function seedDataCollection() {
         if(err) {
             console.log('error in getting the data')
         } else {
-            console.log(ownerData);
+            // console.log(ownerData);
             resp.send(ownerData)
-            console.log(ownerData);
+            // console.log(ownerData);
         }
     })
 
  }
+ async function AddBook(req,res){
+     let bookTitle=req.body
+     console.log(bookTitle);
+     const addedBook = new bookModel({
+        title:bookTitle.Title1,
+        description:bookTitle.Description1,
+        email:bookTitle.emailuser
+    })
+
+    await addedBook.save();
+    // console.log(addedBook);
+    
+    bookModel.find({email:bookTitle.emailuser}, function (err, ownerData) {
+        if (err) {
+            console.log('error in getting the data')
+        } else {
+            console.log(ownerData);
+            res.send(ownerData)
+        }
+    })
+    
+
+
+ }
+
+
+
+
+
 
 
 
