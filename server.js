@@ -38,26 +38,26 @@ function seedDataCollection() {
     const math = new bookModel({
         title:'math',
     description:'The thing is, the description isn’t a summary or a book report. It’s an ad',
-    email:'mansouralbatran@gmai.com'
+    email:'mansouralbatran@gmail.com'
     })
 
     const english = new bookModel({
         title:'english',
         description:'What is the first thing you check on a book (after the cover art)? I would bet, whether you’re at the library, at a bookstore, or shopping online, it’s the book description',
-        email:'mansouralbatran@gmai.com'
+        email:'mansouralbatran@gmail.com'
     })
 
     const arabic = new bookModel({
         title: 'arabic',
         description:'But what determines good book descriptions? Do book descriptions fall into categories like voice and style, where it’s not so easily taught as developed through practice?',
-        email:'mansouralbatran@gmai.com',
+        email:'mansouralbatran@gmail.com',
     })
     math.save();
     english.save();
     arabic.save();
 }
 
-// seedDataCollection();///
+//// seedDataCollection();
 
 
  function getbookfunction(req,resp){
@@ -69,6 +69,7 @@ function seedDataCollection() {
         } else {
             console.log(ownerData);
             resp.send(ownerData)
+            console.log(ownerData);
         }
     })
 
