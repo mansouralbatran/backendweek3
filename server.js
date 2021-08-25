@@ -8,9 +8,10 @@ const PORT = process.env.PORT;
 server.use(cors());
 server.use(express.json())
 
-mongoose.connect('mongodb://localhost:27017/book', { useNewUrlParser: true, useUnifiedTopology: true });
-/////class
+mongoose.connect(`${process.env.MONGO_URL}`, { useNewUrlParser: true, useUnifiedTopology: true });
+//class/////mongodb://mansour:0000@mansourclustr-shard-00-00.9lgt0.mongodb.net:27017,mansourclustr-shard-00-01.9lgt0.mongodb.net:27017,mansourclustr-shard-00-02.9lgt0.mongodb.net:27017/bookdata?ssl=true&replicaSet=atlas-qu88y1-shard-0&authSource=admin&retryWrites=true&w=majority
 
+// mongodb://localhost:27017/book
 //Schema
 const bookSchema = new mongoose.Schema({
     title: String,
@@ -30,7 +31,12 @@ server.get('/test', testHandler);
 
 server.post('/addbook',AddBook)
 
-server.delete('/deleteCat/:BookId',DeleteBook)
+server.delete('/deletebook/:BookId',DeleteBook)
+
+
+
+server.put('/updatebook',updateBook)
+
 
 server.listen(PORT, () => {
     console.log(`Listning on PORT ${PORT}`)
@@ -124,7 +130,41 @@ bookModel.remove({_id:DeletedBook},function(error,DeletedData){
     }
 })
 }
+function updateBook (req,res){
+  let  selectedbook=req.body
+//   console.log('aaaaaaa',selectedbook);
+  bookModel.find({_id:selectedbook.id},async function(err,udatingdata){
+  if (err) {
+    console.log('error in getting the data')
+} else {
+    // console.log(DeletedData);
+    // console.log(udatingdata)
 
+    udatingdata[0].title=selectedbook.Title1
+    udatingdata[0].description=selectedbook.Description1
+    udatingdata[0].email=selectedbook.emailuser
+
+    // console.log('bbbbbbbbbbbb',udatingdata)
+
+    await udatingdata[0].save();
+
+    bookModel.find({email:selectedbook.emailuser}, function (err, RemainedData) {
+        if (err) {
+            console.log('error in getting the data')
+        } else {
+            // console.log(DeletedData);
+            console.log(RemainedData);
+            res.send(RemainedData)
+
+        }
+    })
+    
+
+}
+
+ })
+
+}
 
 
 
